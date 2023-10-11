@@ -6,35 +6,34 @@ class CreditRateCalculationService
       @amount = params[:amount]
       @credit_period = params[:credit_period]
       @annual_equivalent_rate = params[:annual_equivalent_rate]
-      @monthly_payments_this_year = 12
+      @total_payments_in_year = 12
 
       case type
       when 'Fixed'
-        calculate_rate
+        fixed_rate
       when 'Decreasing'
-        calculate_decreasing_rates
+        decreasing_rates
       end
     end
 
     private
 
-    def calculate_decreasing_rates
-      payments_left = @credit_period
-      amount_left = @amount
+    def decreasing_rates
       rates = []
+      rk = @amount / @credit_period
 
       @credit_period.times do
-        rates << calculate_rate(payments_left, amount_left)
-        payments_left -= 1
-        amount_left -= rates.last
+        ro = ((@amount - (@credit_period - rates.length) * rk) * @annual_equivalent_rate) / @total_payments_in_year
+        rates << (ro + rk).round(2)
       end
+
       rates
     end
 
-    def calculate_rate(credit_period = @credit_period, amount = @amount)
-      amount * ((1 + (@annual_equivalent_rate / @monthly_payments_this_year))**credit_period) *
-        (1 + (@annual_equivalent_rate / @monthly_payments_this_year) - 1) /
-        (((1 + (@annual_equivalent_rate / @monthly_payments_this_year))**credit_period) - 1)
+    def fixed_rate
+      @amount * ((1 + (@annual_equivalent_rate / @total_payments_in_year))**@credit_period) *
+        (1 + (@annual_equivalent_rate / @total_payments_in_year) - 1) /
+        (((1 + (@annual_equivalent_rate / @total_payments_in_year))**@credit_period) - 1).round(2)
     end
   end
 end
