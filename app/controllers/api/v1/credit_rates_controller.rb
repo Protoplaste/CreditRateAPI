@@ -8,9 +8,13 @@ module Api
       end
 
       def fixed
+        rate = CreditRateCalculationService.call(params, 'Fixed')
+        render json: rate
       end
 
       def decreasing
+        rates = CreditRateCalculationService.call(params, 'Decreasing')
+        render json: rates
       end
 
       private
