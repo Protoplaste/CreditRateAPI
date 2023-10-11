@@ -1,24 +1,15 @@
-# README
+# Requirements
+- Ruby 3.2.0
+- Bundler 2.4.6
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Setup
+- From the repository folder run `bundle install`
+- Run `rails s` to start the rails server
+- The API endpoints should now be available at http://localhost:3000
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# API
+- The API has two endpoints "/fixed" and "/decreasing"
+- Both endpoints require this params:
+  - amount (The total borrowed amount)
+  - credit_period (The number of payments left)
+  - annual_equivalent_rate (or RRSO)
